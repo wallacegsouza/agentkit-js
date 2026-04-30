@@ -1,0 +1,11 @@
+{
+  "name": "ai-browser-agent",
+  "version": "1.0.0",
+  "description": "Client-side AI browser chat agent with localStorage memory and configurable LLM providers.",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "check:imports": "node scripts/check-imports.mjs"
+  },
+  "devDependencies": {}
+}
