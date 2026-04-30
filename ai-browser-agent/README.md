@@ -16,6 +16,7 @@ O objetivo é servir como uma base simples e evolutiva para agentes client-side 
 - Tools Service para expor APIs do browser como ferramentas controladas.
 - Tela de ajuda com boas práticas para prompts de memória.
 - Painel opcional de debug com logs mascarados.
+- Rastreabilidade opcional do fluxo do agente sem registrar conteúdo sensível.
 
 ## Stack
 
@@ -66,6 +67,8 @@ Valida imports relativos dos módulos JavaScript.
 ## Configuração de LLM
 
 Abra **Configurações** na interface. As configurações comuns são salvas em `localStorage`, mas a API key não é salva.
+
+O timeout padrão das chamadas ao LLM é de `120000` ms.
 
 ### Ollama
 
@@ -332,6 +335,13 @@ O logger suporta:
 - `error`
 
 Logs podem aparecer na interface quando debug estiver habilitado. O logger mascara padrões comuns de segredo e não deve receber API keys.
+
+Há duas flags relacionadas:
+
+- **Rastreabilidade do agente**: registra eventos estruturados do fluxo do agente, como início/fim de envio, montagem de contexto, chamada ao LLM, execução de tools e otimização de memória. Não registra API key nem conteúdo completo das mensagens.
+- **Logs debug habilitados**: mostra logs técnicos adicionais, úteis durante desenvolvimento.
+
+Quando **Rastreabilidade do agente** ou **Logs debug habilitados** estiver ativo, o painel de logs aparece na interface. A opção **Salvar logs recentes** persiste logs em `aiAgent:logs`; mantenha desativada se quiser logs apenas em memória durante a sessão.
 
 ## Namespace do localStorage
 

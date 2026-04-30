@@ -103,7 +103,8 @@ export class ChatUI {
   renderDebug() {
     const container = this.root.querySelector("[data-debug]");
     if (!container) return;
-    if (this.settingsStore.get().debugEnabled) {
+    const settings = this.settingsStore.get();
+    if (settings.debugEnabled || settings.agentTraceEnabled) {
       this.debugUI.mount(container);
     } else {
       container.innerHTML = "";

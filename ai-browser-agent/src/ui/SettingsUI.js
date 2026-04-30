@@ -42,6 +42,7 @@ export class SettingsUI {
         ${checkbox("requiresApiKey", "Provider exige API key", settings.requiresApiKey)}
         ${checkbox("toolsEnabled", "Ferramentas habilitadas", settings.toolsEnabled)}
         ${checkbox("longTermMemoryEnabled", "Memória longa habilitada", settings.longTermMemoryEnabled)}
+        ${checkbox("agentTraceEnabled", "Rastreabilidade do agente", settings.agentTraceEnabled)}
         ${checkbox("debugEnabled", "Logs debug habilitados", settings.debugEnabled)}
         ${checkbox("persistLogs", "Salvar logs recentes", settings.persistLogs)}
         ${checkbox("asyncMemoryOptimizationEnabled", "Otimização assíncrona de memória", settings.asyncMemoryOptimizationEnabled)}
@@ -72,6 +73,7 @@ export class SettingsUI {
         requiresApiKey: form.has("requiresApiKey"),
         toolsEnabled: form.has("toolsEnabled"),
         longTermMemoryEnabled: form.has("longTermMemoryEnabled"),
+        agentTraceEnabled: form.has("agentTraceEnabled"),
         debugEnabled: form.has("debugEnabled"),
         persistLogs: form.has("persistLogs"),
         asyncMemoryOptimizationEnabled: form.has("asyncMemoryOptimizationEnabled"),

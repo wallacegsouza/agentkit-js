@@ -14,6 +14,10 @@ export class ToolCallingEngine {
   async executeFromText(text) {
     const call = this.extractToolCall(text);
     if (!call) return null;
+    return this.executeCall(call);
+  }
+
+  async executeCall(call) {
     return this.toolsService.execute(call.name, call.args);
   }
 }

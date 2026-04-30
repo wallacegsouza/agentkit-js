@@ -33,10 +33,20 @@ export class ToolsService {
       if (!allowed) return toolError(name, "Execução cancelada pelo usuário.", "USER_DENIED");
     }
     try {
+      const startedAt = performance.now();
       this.logger.info("Tool chamada", { name });
+      this.logger.trace("Tool execution iniciado", {
+        name,
+        sensitive: Boolean(tool.sensitive),
+        argKeys: Object.keys(args || {})
+      });
       const data = await tool.execute(args);
       const result = { ok: true, tool: name, data };
       this.logger.debug("Resultado de tool", summarizeToolResult(name, data));
+      this.logger.trace("Tool execution finalizado", {
+        ...summarizeToolResult(name, data),
+        durationMs: Math.round(performance.now() - startedAt)
+      });
       return result;
     } catch (error) {
       this.logger.warn("Erro de tool", { name, message: error?.message });

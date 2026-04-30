@@ -9,14 +9,20 @@ export class Logger {
     this.repository = repository;
     this.eventBus = eventBus;
     this.debugEnabled = false;
+    this.agentTraceEnabled = false;
     this.persistLogs = false;
     this.maxEntries = 120;
     this.entries = this.repository.get("logs", []);
   }
 
-  configure({ debugEnabled = false, persistLogs = false } = {}) {
+  configure({ debugEnabled = false, agentTraceEnabled = false, persistLogs = false } = {}) {
     this.debugEnabled = Boolean(debugEnabled);
+    this.agentTraceEnabled = Boolean(agentTraceEnabled);
     this.persistLogs = Boolean(persistLogs);
+  }
+
+  trace(message, details = {}) {
+    if (this.agentTraceEnabled) this.write("trace", message, details);
   }
 
   debug(message, details = {}) {

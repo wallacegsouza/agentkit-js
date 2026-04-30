@@ -22,8 +22,15 @@ export class MemoryOptimizerAgent {
 
   schedule() {
     const settings = this.settingsProvider();
-    if (!settings.asyncMemoryOptimizationEnabled || this.pending) return;
+    if (!settings.asyncMemoryOptimizationEnabled || this.pending) {
+      this.logger.trace("Otimização de memória não agendada", {
+        asyncMemoryOptimizationEnabled: settings.asyncMemoryOptimizationEnabled,
+        pending: this.pending
+      });
+      return;
+    }
     this.pending = true;
+    this.logger.trace("Otimização de memória agendada");
     const run = () => this.run().finally(() => (this.pending = false));
     if ("requestIdleCallback" in window) {
       window.requestIdleCallback(run, { timeout: 3000 });
@@ -34,9 +41,17 @@ export class MemoryOptimizerAgent {
 
   async run() {
     const settings = this.settingsProvider();
-    if (!settings.longTermMemoryEnabled) return;
+    if (!settings.longTermMemoryEnabled) {
+      this.logger.trace("Otimização de memória ignorada: memória longa desabilitada");
+      return;
+    }
+    const startedAt = performance.now();
     this.logger.debug("Otimização assíncrona iniciada");
     const recentMessages = this.memoryService.shortTermMemory.getMessages().slice(-8);
+    this.logger.trace("Otimização assíncrona iniciada", {
+      recentMessageCount: recentMessages.length,
+      llmMemoryOptimizationEnabled: settings.llmMemoryOptimizationEnabled
+    });
     const createdLocal = this.runLocalStrategy(recentMessages);
 
     if (settings.llmMemoryOptimizationEnabled) {
@@ -44,6 +59,10 @@ export class MemoryOptimizerAgent {
     }
 
     this.logger.debug("Otimização assíncrona finalizada", { createdLocal });
+    this.logger.trace("Otimização assíncrona finalizada", {
+      createdLocal,
+      durationMs: Math.round(performance.now() - startedAt)
+    });
   }
 
   runLocalStrategy(messages) {

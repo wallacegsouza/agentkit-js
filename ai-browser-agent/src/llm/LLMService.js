@@ -10,11 +10,12 @@ export const DEFAULT_SETTINGS = {
   model: "llama3.1",
   temperature: 0.3,
   maxTokens: 800,
-  timeoutMs: 60000,
+  timeoutMs: 120000,
   requiresApiKey: false,
   toolsEnabled: true,
   longTermMemoryEnabled: true,
   debugEnabled: false,
+  agentTraceEnabled: false,
   persistLogs: false,
   asyncMemoryOptimizationEnabled: true,
   llmMemoryOptimizationEnabled: false,
@@ -51,7 +52,25 @@ export class LLMService {
         model: settings.model,
         requiresApiKey: settings.requiresApiKey
       });
-      return await provider.chat({ messages, config: settings, secrets, signal: controller.signal });
+      this.logger?.trace("LLM request iniciado", {
+        providerType: settings.providerType,
+        model: settings.model,
+        messageCount: messages.length,
+        timeoutMs: settings.timeoutMs,
+        requiresApiKey: settings.requiresApiKey,
+        hasRuntimeApiKey: Boolean(secrets?.apiKey)
+      });
+      const startedAt = performance.now();
+      const result = await provider.chat({ messages, config: settings, secrets, signal: controller.signal });
+      this.logger?.trace("LLM request finalizado", {
+        ok: result.ok,
+        providerType: settings.providerType,
+        model: settings.model,
+        durationMs: Math.round(performance.now() - startedAt),
+        contentCharacters: result.ok ? String(result.content || "").length : 0,
+        errorCode: result.ok ? null : result.error?.code
+      });
+      return result;
     } catch (error) {
       const isAbort = error?.name === "AbortError";
       const result = {
