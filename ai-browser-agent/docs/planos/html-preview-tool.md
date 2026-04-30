@@ -77,9 +77,11 @@ Fluxo:
 4. Verificar padrões sensíveis no conteúdo.
 5. Criar documento interno para `iframe srcdoc`.
 6. Criar documento externo para a nova janela.
-7. Abrir janela com `window.open("", "_blank", "noopener,noreferrer")`.
+7. Tentar abrir janela com `window.open("about:blank", "_blank")`.
 8. Escrever documento externo com aviso de segurança e o `iframe`.
-9. Retornar status sem incluir o conteúdo completo.
+9. Definir `preview.opener = null` quando a janela abrir.
+10. Se o popup for bloqueado, mostrar um fallback visual dentro do app com botão “Abrir preview”.
+11. Retornar status sem incluir o conteúdo completo.
 
 Documento externo:
 
@@ -105,7 +107,7 @@ Documento do iframe:
   - `token: ...`
   - `password: ...`
   - `secret: ...`
-- Se `window.open` retornar `null`, mostrar erro explicando que o popup pode ter sido bloqueado.
+- Se `window.open` retornar `null`, não falhar silenciosamente: mostrar um painel no app com botão para abrir o preview por clique direto do usuário.
 
 ## Integração
 
@@ -136,6 +138,7 @@ Renderiza HTML, CSS e JavaScript opcional em uma nova janela isolada. Use soment
 - Confirmar que o preview não consegue acessar `localStorage` do app principal.
 - Confirmar que logs não incluem HTML/CSS/JS completo.
 - Confirmar que popup bloqueado gera erro legível.
+- Confirmar que popup bloqueado mostra o painel “Preview HTML pronto” com botão “Abrir preview”.
 
 ## Exemplo de Chamada
 

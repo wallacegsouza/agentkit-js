@@ -301,6 +301,8 @@ Tools implementadas:
 
 Ferramentas sensíveis exigem confirmação visual do usuário.
 
+Se o browser bloquear a abertura automática de `html_preview`, o app mostra um painel com o botão **Abrir preview**. Esse botão usa um clique real do usuário para contornar o bloqueio de popup de forma explícita.
+
 O checklist de próximas tools fica em:
 
 ```txt
