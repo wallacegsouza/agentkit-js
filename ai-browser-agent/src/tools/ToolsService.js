@@ -36,7 +36,7 @@ export class ToolsService {
       this.logger.info("Tool chamada", { name });
       const data = await tool.execute(args);
       const result = { ok: true, tool: name, data };
-      this.logger.debug("Resultado de tool", { name, data });
+      this.logger.debug("Resultado de tool", summarizeToolResult(name, data));
       return result;
     } catch (error) {
       this.logger.warn("Erro de tool", { name, message: error?.message });
@@ -47,4 +47,16 @@ export class ToolsService {
 
 function toolError(tool, message, code) {
   return { ok: false, tool, error: { message, code } };
+}
+
+function summarizeToolResult(name, data) {
+  if (!data || typeof data !== "object") return { name, resultType: typeof data };
+  return {
+    name,
+    keys: Object.keys(data).slice(0, 12),
+    count: data.count ?? data.results?.length ?? data.models?.length ?? null,
+    opened: data.opened ?? null,
+    downloaded: data.downloaded ?? null,
+    characters: data.characters ?? data.htmlCharacters ?? null
+  };
 }

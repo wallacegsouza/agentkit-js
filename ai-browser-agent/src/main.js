@@ -33,17 +33,23 @@ const shortTermMemory = new ShortTermMemory({
 });
 const longTermMemory = new LongTermMemory({ repository });
 const memoryService = new MemoryService({ shortTermMemory, longTermMemory, eventBus, logger });
+let memoryOptimizer = null;
 
 const toolsService = new ToolsService({
   logger,
   confirmationProvider: (message) => Promise.resolve(window.confirm(message))
 });
-registerBrowserTools(toolsService, repository);
+registerBrowserTools(toolsService, repository, {
+  settingsProvider: () => settingsStore.get(),
+  runtimeSecrets,
+  memoryService,
+  memoryOptimizerProvider: () => memoryOptimizer
+});
 toolsService.setEnabled(settingsStore.get().toolsEnabled);
 
 const llmService = new LLMService({ logger });
 const contextBuilder = new ContextBuilder({ memoryService, toolsService });
-const memoryOptimizer = new MemoryOptimizerAgent({
+memoryOptimizer = new MemoryOptimizerAgent({
   memoryService,
   llmService,
   runtimeSecrets,

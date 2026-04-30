@@ -264,10 +264,40 @@ Tools implementadas:
 - `date_time`: data, hora, timezone e locale.
 - `calculator`: expressões aritméticas simples sem `eval`.
 - `browser_info`: informações básicas do browser.
+- `page_info`: URL, título e viewport da página atual.
+- `text_formatter`: formatação simples de texto.
+- `uuid_generator`: geração de UUIDs ou IDs prefixados.
+- `token_estimator`: estimativa local de tokens.
+- `regex_tester`: teste de regex com limites simples.
+- `provider_health_check`: teste de conectividade do provider configurado.
+- `ollama_models`: lista modelos disponíveis em um servidor Ollama.
+- `memory_search`: busca memórias longas relevantes.
+- `memory_create`: criação manual de memória longa.
+- `memory_update`: atualização manual de memória longa.
+- `memory_delete`: remoção de memória longa.
+- `conversation_export`: exportação da conversa atual.
+- `settings_export`: exportação de configurações sem secrets.
 - `clipboard_read`: leitura do clipboard com confirmação.
+- `clipboard_write`: escrita no clipboard com confirmação.
+- `download_file`: download de `.txt`, `.json` ou `.md`.
+- `json_validator`: validação e formatação de JSON.
+- `context_preview`: prévia segura do contexto enviado ao LLM.
+- `html_preview`: preview isolado de HTML/CSS/JS em nova janela.
+- `file_import`: leitura de arquivo escolhido pelo usuário.
+- `markdown_to_html`: conversão segura de Markdown simples para HTML.
+- `csv_parser`: conversão de CSV simples para JSON.
+- `table_formatter`: formatação de dados em tabela Markdown.
 - `geolocation`: localização aproximada com confirmação.
 - `notification`: notificação local com confirmação.
+- `speech_synthesis`: leitura de texto em voz alta.
+- `speech_recognition`: ditado por voz quando disponível.
+- `camera_check`: verificação de disponibilidade de câmera.
+- `network_status`: status online/offline e conexão.
 - `local_storage`: leitura/listagem/remoção no namespace `aiAgent:*` com confirmação.
+- `local_storage_inspector`: inspeção controlada do namespace `aiAgent:*`.
+- `prompt_debugger`: análise local de prompt.
+- `memory_optimizer_run`: execução manual do otimizador de memória.
+- `tool_list`: lista de tools disponíveis.
 
 Ferramentas sensíveis exigem confirmação visual do usuário.
 
