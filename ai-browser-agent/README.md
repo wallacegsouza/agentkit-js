@@ -341,7 +341,7 @@ Há duas flags relacionadas:
 - **Rastreabilidade do agente**: registra eventos estruturados do fluxo do agente, como início/fim de envio, montagem de contexto, chamada ao LLM, execução de tools e otimização de memória. Não registra API key nem conteúdo completo das mensagens.
 - **Logs debug habilitados**: mostra logs técnicos adicionais, úteis durante desenvolvimento.
 
-Quando **Rastreabilidade do agente** ou **Logs debug habilitados** estiver ativo, o painel de logs aparece na interface. A opção **Salvar logs recentes** persiste logs em `aiAgent:logs`; mantenha desativada se quiser logs apenas em memória durante a sessão.
+Quando **Rastreabilidade do agente** ou **Logs debug habilitados** estiver ativo, o painel de logs aparece na interface. Cada evento mostra o tempo desde o evento anterior (`+tempo`) e desde o início da sessão de logs (`T+tempo`). A opção **Salvar logs recentes** persiste logs em `aiAgent:logs`; mantenha desativada se quiser logs apenas em memória durante a sessão.
 
 ## Namespace do localStorage
 

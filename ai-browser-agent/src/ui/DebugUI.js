@@ -27,7 +27,10 @@ export class DebugUI {
             <div class="border-t border-zinc-800 py-2">
               <span class="font-semibold">${escapeHtml(entry.level)}</span>
               <span class="text-zinc-400">${escapeHtml(entry.createdAt)}</span>
+              <span class="ml-2 rounded bg-zinc-800 px-1.5 py-0.5 text-zinc-300">+${formatMs(entry.timing?.sincePreviousMs)}</span>
+              <span class="rounded bg-zinc-800 px-1.5 py-0.5 text-zinc-400">T+${formatMs(entry.timing?.sinceStartMs)}</span>
               <div>${escapeHtml(entry.message)}</div>
+              ${entry.details && Object.keys(entry.details).length ? `<pre class="mt-1 overflow-auto rounded bg-zinc-900 p-2 text-[11px] text-zinc-300">${escapeHtml(JSON.stringify(entry.details, null, 2))}</pre>` : ""}
             </div>
           `).join("") || "<p class=\"text-zinc-400\">Sem logs.</p>"}
         </div>
@@ -35,4 +38,11 @@ export class DebugUI {
     `;
     this.container.querySelector("[data-clear]")?.addEventListener("click", () => this.logger.clear());
   }
+}
+
+function formatMs(value) {
+  const ms = Number(value);
+  if (!Number.isFinite(ms)) return "0ms";
+  if (ms < 1000) return `${ms}ms`;
+  return `${(ms / 1000).toFixed(2)}s`;
 }

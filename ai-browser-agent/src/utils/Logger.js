@@ -12,6 +12,8 @@ export class Logger {
     this.agentTraceEnabled = false;
     this.persistLogs = false;
     this.maxEntries = 120;
+    this.startedAtMs = Date.now();
+    this.lastEntryAtMs = this.entriesNewestTimestamp(this.repository.get("logs", [])) || this.startedAtMs;
     this.entries = this.repository.get("logs", []);
   }
 
@@ -42,13 +44,19 @@ export class Logger {
   }
 
   write(level, message, details = {}) {
+    const nowMs = Date.now();
     const entry = {
       id: `log_${Date.now()}_${Math.random().toString(36).slice(2)}`,
       level,
       message: this.mask(message),
       details: this.maskObject(details),
-      createdAt: new Date().toISOString()
+      createdAt: new Date(nowMs).toISOString(),
+      timing: {
+        sinceStartMs: Math.max(0, nowMs - this.startedAtMs),
+        sincePreviousMs: Math.max(0, nowMs - this.lastEntryAtMs)
+      }
     };
+    this.lastEntryAtMs = nowMs;
     this.entries = [entry, ...this.entries].slice(0, this.maxEntries);
     if (this.persistLogs) this.repository.set("logs", this.entries);
     this.eventBus?.emit("logs:changed", this.entries);
@@ -60,8 +68,16 @@ export class Logger {
 
   clear() {
     this.entries = [];
+    this.startedAtMs = Date.now();
+    this.lastEntryAtMs = this.startedAtMs;
     this.repository.remove("logs");
     this.eventBus?.emit("logs:changed", this.entries);
+  }
+
+  entriesNewestTimestamp(entries) {
+    const newest = entries?.[0]?.createdAt;
+    const time = newest ? new Date(newest).getTime() : null;
+    return Number.isFinite(time) ? time : null;
   }
 
   maskObject(value) {
